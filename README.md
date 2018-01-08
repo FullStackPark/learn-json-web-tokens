@@ -1,10 +1,10 @@
 ![JWT logo wider](http://i.imgur.com/qDOOu4o.jpg)
 
-# Learn how to use *JSON Web Tokens* (JWT) for much *Authentication* win!
+# 学习使用 *JSON Web Tokens* (JWT) ,更好的实现*Authentication* !
 
 ![dilbert fixed the internet](http://i.imgur.com/cNElVof.jpg)
 
-Learn how to use JSON Web Token (JWT) to *secure* your Web and/or Mobile Application!
+学习使用 JSON Web Token (JWT) 来使你的 Web 和/或 Mobile 应用更加的*安全* !
 
 [![Build Status][travis-image]][travis-url]
 [![Code Climate](https://codeclimate.com/github/dwyl/learn-json-web-tokens/badges/gpa.svg)](https://codeclimate.com/github/dwyl/learn-json-web-tokens)
@@ -12,40 +12,36 @@ Learn how to use JSON Web Token (JWT) to *secure* your Web and/or Mobile Applica
 [![Dependency Status](https://david-dm.org/dwyl/learn-json-web-tokens.svg)](https://david-dm.org/dwyl/learn-json-web-tokens)
 [![Node.js Version][node-version-image]][node-version-url]
 
-## *Why*?
+## *为什么*?
 
-JSON Web Tokens (JWTs) make it *easy* to _**send read-only signed**_ "_**claims**_"
-between services (*both internal and external to your app/site*).
-Claims are *any* bits of data that you want someone else to be able to *read*
-and/or *verify* but ***not alter***.
+JSON Web Tokens (JWTs) 可以使不同的服务(*包括内部/外部的 APP/网站*)可以*更简单地*传递 to _**send read-only signed**_ "_**claims**_".
+Claims 可以是*任意* 的你想让别人*读取*的数据,或者*验证*,但是不允许 ***修改***.
 
 
 > **Note**: *If that sounds buzz-wordy, don't worry, it will all become clear in the next 5 mins of reading!*
 
-## What?
+## 什么?
 
 > "***JSON Web Token*** *(JWT) is a compact* ***URL-safe*** *means of
 > representing claims to be transferred between two parties.
 > The claims in a JWT are* ***encoded*** *as a* ***JSON object*** *that is* ***digitally
 > signed*** *using JSON Web Signature (JWS)*.  ~ IETF
 
-###  In *English*
+###  *用人话这么说*
 
-To identify/authenticate people in your (web/mobile) app,
-put a ***standards-based token*** in the **header** or **url** of the page
-(or API endpoint) which proves the user has logged in and is allowed to
-access the desired content.
+在 Web/Mobile应用中用来标示/验证一个唯一的个体,可以在页面或者API 请求的入口点的**header** 或**url**中增加一个***标准的 Token值***,这个值可以用来标示用户已经登录或者可以访问这个资源.
 
-example: `https://www.yoursite.com/private-content/?token=eyJ0eXAiOiJKV1Qi.eyJrZXkiOi.eUiabuiKv`
+例如: `https://www.yoursite.com/private-content/?token=eyJ0eXAiOiJKV1Qi.eyJrZXkiOi.eUiabuiKv`
 
-> **Note**: if this does not *look* "secure" to you,
-scroll down to the "[***security***](https://github.com/dwyl/learn-json-web-tokens#q-if-i-put-the-jwt-in-the-url-or-header-is-it-secure)" section.
+> **注**: 如果这个看起来还是不是很安全,你可以参考下面的[***安全的部分***](https://github.com/FullStackPark/learn-json-web-tokens#q-if-i-put-the-jwt-in-the-url-or-header-is-it-secure).
 
-### What does a JWT *Look* Like?
+### 那么 JWT 到底长成个什么*样呢?
 
-Tokens are a string of "url safe" characters which *encode* information.
-Tokens have **three components** (separated by periods)
-(shown here on multiple lines for *readability* but used as a single string of text)
+-Token 是一串字符串,这一串字符串中包含了一些*加密过的*信息.
+
+-Token 是不同作用的3个部分组成(以点.进行分割).
+
+-下面的字符串为了可以更好的显示已经分成3个不同的行.
 
 ```js
 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9           // header
@@ -53,27 +49,31 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9           // header
 .eUiabuiKv-8PYk2AkGY4Fb5KMZeorYBLw261JPQD5lM   // signature
 ```
 
-#### 1. Header
+#### 1. 头
 
-The first part of a JWT is an encoded string representation
-of a simple JavaScript object which describes the token along with the hashing algorithm used.
-
+JWT 的第一个部分所采用的加密字符串用来描述一个简单的 JavaScript 对象,描述这个Token 使用了什么样的算法.
+1
 #### 2. Payload
 
-The second part of the JWT forms the core of the token.
-Payload length is proportional to the amount of data you store in the JWT.
-General rule of thumb is: store the bare minimum in the JWT.
+JWT 的第二部分是 Token 的核心部分. Payload 部分的长度决定于你在 JWT 中包含了多少信息.
+一般的经验法则是：将JWT中的最小值存储起来。
 
+#### 3. 签名部分
 
-#### 3. Signature
+第三部分, JWT 的最后一个部分是第一个部分和第二部分的内容生成的签名部分,来标示这个 Token 是合法可用的.
 
-The third, and final, part of the JWT is a signature generated
-based on the header (part one) and the body (part two) and will be used
-to *verify* that the JWT is valid.
+### 什么是声明"Claims"?
 
-### What are "Claims"?
+声明部分包含了 JWT 规范制定的 ***键*** 和 ***对应的值*** :
 
-Claims are the predefined **keys** and their **values**:
++ **iss**：令牌的发行者,issuer
++ **exp**：到期时间戳（拒绝已到期的令牌）。 注意：如规范中所定义，这必须以秒为单位。expire
++ **iat**：JWT发布的时间。 可以用来确定JWT的年龄,issue at
++ **nbf**：“不在之前”是令牌将变为活动的未来时间。not before
++ **jti**：JWT的唯一标识符。 用于防止重新使用或重播JWT。
++ **sub**：令牌的主题（很少使用）
++ **aud**：令牌的受众（也很少使用）
+
 
 + **iss**: issuer of the token
 + **exp**: the expiration timestamp (reject tokens which have expired). Note: as defined in the spec, this must be in seconds.
@@ -87,32 +87,34 @@ See: http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#Registere
 
 # Example [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/learn-json-web-tokens/issues)
 
-Lets get stuck in with a simple example.
+
+让我们深入分析一个简单的例子。
 (the *full* source is in the **/example** directory)
 
 > TRY it: https://jwt.herokuapp.com/
 
-## Server
+## 服务端
 
-Using the *core* **node.js http** server we create 4 endpoints in **/example/server.js**:
+例子中使用**node.js http** 服务端在 **/example/server.js** 创建了4个入口点:
 
-1. **/home** : home page (not essential but its where our **login** form is.)
-2. **/auth** : *authenticate* the visitor (returns error + login form if failed)
-3. **/private** : our restricted content - ***login required*** (valid session token) to see this page
-4. **/logout** : invalidates the token and logs out the user (prevent from re-using old token)
+1. **/home** : 主页 (不是必须的,但是 **login** 表单在这里.)
+2. **/auth** : *authenticate* 游客(如果登录错误或者失败都会返回错误)
+3. **/private** : 我们的受限制的资源的入口 - ***特指需要登录后才能查看的资源*** (合法的 SessionToken)才能查看
+4. **/logout** : Token 失效和登出用户,将之前的 Token 设置为无效
 
-We have *deliberately* made **server.js** as _simple as possible_ for:
+我们有意的将 **server.js** 设置的非常的简单:
 
-+ Readability
-+ Maintainability
-+ Testability (all helper/handler methods are tested separately)
++ 可读性更强
++ 更好维护
++ 更好测试 (所有的帮助类/处理类都可以单独测试)
 
 > note: if you can make it _simpler_, please submit an [issue](https://github.com/dwyl/learn-json-web-tokens/issues) to discuss!
 
-## Helper Methods
+## 帮助类
 
-All the helper methods are kept in **/example/lib/helpers.js**
-The two most interesting/relevant methods are (simplified versions show here):
+所有的帮助方法都保存在 **/example/lib/helpers.js**
+
+最重要的2个方法的简化列表如下:
 
 ```javascript
 // generate the JWT
@@ -125,9 +127,9 @@ function generateToken(req){
   return token;
 }
 ```
-Which ***generates*** our JWT token when the user authenticates (this is then sent back to the client in the **Authorization** header for use in subsequent requests),
+ 在用户验证过程, ***生成***  JWT token并且返回给用户的方法如下,用户在之后的请求过程中也需要将此 Token 包含在 Header 的 **Authorization** 中
 
-and
+
 
 ```javascript
 // validate the token supplied in request header
@@ -146,9 +148,7 @@ function validate(req, res) {
 }
 ```
 
-Which **checks the JWT supplied by the client is valid**,
-shows private ("privado") content to the requestor if valid
-and renders the **authFail** ***error*** page if its not.
+如果用户在请求私有(private)资源的时候, Token 验证通过的话,会返回 **checks the JWT supplied by the client is valid**,否则的话会返回 **authFail** ***error***
 
 **Note**: *Yes*, *both* these methods are ***synchronous***.
 But, given that neither of these methods require *any* **I/O** *or* **Network** requests,
@@ -156,7 +156,7 @@ its pretty safe to compute them synchronously.
 
 > Tip: If you're looking for a ***Full Featured*** **JWT Auth Hapi.js plugin** (which does the verification/validation *asynchronously*) for your Hapi.js-based app please check out: [https://github.com/**dwyl/hapi-auth-jwt2**](https://github.com/dwyl/hapi-auth-jwt2)
 
-## Tests
+## 测试
 
 You may have noticed the [![Build Status][travis-image]][travis-url] badge at the *start* of this tutorial.
 This is a sign the author(s) are not just *cobbling* code together.
